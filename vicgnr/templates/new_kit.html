@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}New kit{% endblock %}
+{% block content %}
+<h1>Generate new victim kit</h1>
+
+<form method="post" class="card form-grid">
+  <label>
+    Kit title
+    <input type="text" name="title" maxlength="120" value="Maze attempt">
+  </label>
+
+  <label>
+    Real letter victims
+    <input type="number" name="real_letters" min="0" value="6">
+  </label>
+
+  <label>
+    False letter victims
+    <input type="number" name="false_letters" min="0" value="3">
+  </label>
+
+  <label>
+    Real visual victims
+    <input type="number" name="real_visual" min="0" value="3">
+  </label>
+
+  <label>
+    False visual victims
+    <input type="number" name="false_visual" min="0" value="2">
+  </label>
+
+  <label>
+    False letter difficulty (1-5)
+    <select name="difficulty">
+      <option value="1">1 - easy</option>
+      <option value="2">2</option>
+      <option value="3" selected>3 - medium</option>
+      <option value="4">4</option>
+      <option value="5">5 - hard</option>
+    </select>
+  </label>
+
+  <button type="submit">Generate</button>
+</form>
+{% endblock %}

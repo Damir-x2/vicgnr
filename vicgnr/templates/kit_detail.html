@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Kit #{{ kit.id }}{% endblock %}
+{% block content %}
+<div class="row">
+  <h1>{{ kit.title }} (Kit #{{ kit.id }})</h1>
+  <div class="actions">
+    <a class="button secondary" href="{{ url_for('main.dashboard') }}">Back</a>
+    <a class="button" href="{{ url_for('main.download_kit_pdf', kit_id=kit.id) }}">Download PDF</a>
+  </div>
+</div>
+
+<p class="card">
+  Difficulty: {{ kit.difficulty }} |
+  Real letters: {{ kit.real_letter_count }} |
+  False letters: {{ kit.false_letter_count }} |
+  Real visual: {{ kit.real_visual_count }} |
+  False visual: {{ kit.false_visual_count }}
+</p>
+
+<div class="table-wrap card">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Type</th>
+        <th>Real?</th>
+        <th>Payload</th>
+        <th>Sum</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in kit.items %}
+      <tr>
+        <td>{{ item.position }}</td>
+        <td>{{ item.item_type }}</td>
+        <td>{{ "REAL" if item.is_real else "FALSE" }}</td>
+        <td>
+          {% if item.item_type == "letter" %}
+            {{ item.data.letter }}
+          {% else %}
+            {{ item.data.rings | join(" - ") }}
+          {% endif %}
+        </td>
+        <td>{{ item.value_sum if item.value_sum is not none else "-" }}</td>
+        <td>{{ item.status or "-" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

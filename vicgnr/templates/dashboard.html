@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row">
+  <h1>Your victim kits</h1>
+  <a class="button" href="{{ url_for('main.new_kit') }}">New kit</a>
+</div>
+
+{% if kits %}
+  <div class="table-wrap card">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Difficulty</th>
+          <th>Counts</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for kit in kits %}
+        <tr>
+          <td>{{ kit.id }}</td>
+          <td>{{ kit.title }}</td>
+          <td>{{ kit.difficulty }}</td>
+          <td>
+            RL {{ kit.real_letter_count }},
+            FL {{ kit.false_letter_count }},
+            RV {{ kit.real_visual_count }},
+            FV {{ kit.false_visual_count }}
+          </td>
+          <td>{{ kit.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+          <td>
+            <a href="{{ url_for('main.kit_detail', kit_id=kit.id) }}">View</a>
+            <a href="{{ url_for('main.download_kit_pdf', kit_id=kit.id) }}">PDF</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="card">No kits yet. Create your first one.</p>
+{% endif %}
+{% endblock %}

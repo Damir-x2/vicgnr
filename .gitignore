@@ -1,0 +1,7 @@
+/.cspell/
+/.vscode/
+/.venv/
+__pycache__/
+/RCJRescueMaze2026-final.pdf
+instance/
+*.pyc

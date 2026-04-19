@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}vicgnr - Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Victim kit generator</h1>
+  <p>Generate letter and visual victim sets, keep history by user, and export print-ready PDF sheets.</p>
+  <div class="actions">
+    <a class="button" href="{{ url_for('auth.register') }}">Create account</a>
+    <a class="button secondary" href="{{ url_for('auth.login') }}">Login</a>
+  </div>
+</section>
+{% endblock %}

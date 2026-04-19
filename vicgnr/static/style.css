@@ -1,0 +1,164 @@
+:root {
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --text: #1e2430;
+  --muted: #657086;
+  --line: #dce2ee;
+  --primary: #0d6efd;
+  --primary-dark: #0a58ca;
+  --danger: #dc3545;
+  --ok: #198754;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+a {
+  color: var(--primary-dark);
+  text-decoration: none;
+}
+
+.container {
+  width: min(1080px, 92%);
+  margin: 0 auto;
+}
+
+.site-header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.25rem;
+}
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+
+nav a {
+  margin-left: 1rem;
+  font-weight: 600;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.hero {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.hero p {
+  color: var(--muted);
+}
+
+.actions,
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.button,
+button {
+  background: var(--primary);
+  color: #fff;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.button.secondary {
+  background: #fff;
+  color: var(--primary);
+}
+
+.form-grid {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 540px;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+input,
+select {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+.messages {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.msg {
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  font-weight: 600;
+}
+
+.msg-error {
+  background: #fdecef;
+  color: var(--danger);
+}
+
+.msg-success {
+  background: #e9f7ef;
+  color: var(--ok);
+}
+
+@media (max-width: 700px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
