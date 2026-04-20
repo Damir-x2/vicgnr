@@ -14,7 +14,8 @@
   Real letters: {{ kit.real_letter_count }} |
   False letters: {{ kit.false_letter_count }} |
   Real visual: {{ kit.real_visual_count }} |
-  False visual: {{ kit.false_visual_count }}
+  False visual: {{ kit.false_visual_count }} |
+  Number of rescue kits: {{ kit.rescues_count }}
 </p>
 
 <div class="table-wrap card">
@@ -27,6 +28,7 @@
         <th>Payload</th>
         <th>Sum</th>
         <th>Status</th>
+        <th>Kits</th>
       </tr>
     </thead>
     <tbody>
@@ -44,6 +46,7 @@
         </td>
         <td>{{ item.value_sum if item.value_sum is not none else "-" }}</td>
         <td>{{ item.status or "-" }}</td>
+        <td>{{ item.rescue_kits_count }}</td>
       </tr>
       {% endfor %}
     </tbody>

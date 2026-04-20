@@ -3,7 +3,12 @@ from __future__ import annotations
 import random
 from typing import Callable
 
-R = ("Φ", "Ψ", "Ω")
+L = (
+    ("\u03A6", "harmed", 2),  # Phi
+    ("\u03A8", "stable", 1),  # Psi
+    ("\u03A9", "unharmed", 0),  # Omega
+)
+R = tuple(one[0] for one in L)
 
 F = {
     1: ["A", "F", "L", "P", "T", "X"],
@@ -53,7 +58,8 @@ def _make_rings(rnd, ok: Callable[[int], bool], max_try=5000):
         if ok(val):
             return rings, val
     raise RuntimeError(
-        "Could not generate visual victim with the required constraints.")
+        "Could not generate visual victim with the required constraints."
+    )
 
 
 def gen_ltr_items(real_n, fake_n, lvl, rnd):
@@ -61,14 +67,14 @@ def gen_ltr_items(real_n, fake_n, lvl, rnd):
     pool = _get_fake_ltrs(lvl)
 
     for _ in range(real_n):
-        ch = rnd.choice(R)
+        ch, st, kits = rnd.choice(L)
         items.append(
             {
                 "item_type": "letter",
                 "is_real": True,
-                "payload": {"letter": ch},
+                "payload": {"letter": ch, "rescue_kits_count": kits},
                 "value_sum": None,
-                "status": None,
+                "status": st,
             }
         )
 
@@ -78,9 +84,9 @@ def gen_ltr_items(real_n, fake_n, lvl, rnd):
             {
                 "item_type": "letter",
                 "is_real": False,
-                "payload": {"letter": ch},
+                "payload": {"letter": ch, "rescue_kits_count": 0},
                 "value_sum": None,
-                "status": None,
+                "status": "false",
             }
         )
 
@@ -97,7 +103,7 @@ def gen_vis_items(real_n, fake_n, rnd):
             {
                 "item_type": "visual",
                 "is_real": True,
-                "payload": {"rings": rings},
+                "payload": {"rings": rings, "rescue_kits_count": val},
                 "value_sum": val,
                 "status": SUM_TXT[val],
             }
@@ -109,7 +115,7 @@ def gen_vis_items(real_n, fake_n, rnd):
             {
                 "item_type": "visual",
                 "is_real": False,
-                "payload": {"rings": rings},
+                "payload": {"rings": rings, "rescue_kits_count": 0},
                 "value_sum": val,
                 "status": "false",
             }

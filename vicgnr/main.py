@@ -6,6 +6,7 @@ from flask_login import current_user, login_required
 from .extensions import db
 from .generator import gen_kit_items
 from .models import VictimItem, VictimKit
+from .pdf_builder import make_pdf
 
 bp = Blueprint("main", __name__)
 
@@ -57,6 +58,7 @@ def new_kit():
         rv = _n(request.form.get("real_visual"), 3)
         fv = _n(request.form.get("false_visual"), 2)
         lvl = _n(request.form.get("difficulty"), 3)
+
         lvl = max(1, min(5, lvl))
 
         if rl + fl + rv + fv <= 0:

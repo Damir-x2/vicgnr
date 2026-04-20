@@ -8,6 +8,21 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from .extensions import db
 
+RESCUE_KITS_BY_STATUS = {
+    "harmed": 2,
+    "stable": 1,
+    "unharmed": 0,
+}
+
+LETTER_KITS_BY_SYMBOL = {
+    "\u03A6": 2,  # Phi
+    "\u03A8": 1,  # Psi
+    "\u03A9": 0,  # Omega
+    "О¦": 2,      # legacy
+    "ОЁ": 1,      # legacy
+    "О©": 0,      # legacy
+}
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,7 +39,6 @@ class User(UserMixin, db.Model):
     def check_pass(self, p):
         return check_password_hash(self.password_hash, p)
 
-    # old names
     def set_password(self, password):
         self.set_pass(password)
 
@@ -50,6 +64,12 @@ class VictimKit(db.Model):
         cascade="all, delete-orphan",
         order_by="VictimItem.position",
     )
+
+    @property
+    def rescues_count(self):
+        if self.items:
+            return sum(item.rescue_kits_count for item in self.items)
+        return 0
 
 
 class VictimItem(db.Model):
@@ -78,3 +98,26 @@ class VictimItem(db.Model):
     @property
     def payload(self):
         return self.data
+
+    @property
+    def rescue_kits_count(self):
+        if not self.is_real:
+            return 0
+
+        by_status = RESCUE_KITS_BY_STATUS.get(self.status or "")
+        if by_status is not None:
+            return by_status
+
+        payload = self.data
+        if isinstance(payload, dict):
+            v = payload.get("rescue_kits_count")
+            if isinstance(v, int) and v >= 0:
+                return v
+
+            if self.item_type == "letter":
+                return LETTER_KITS_BY_SYMBOL.get(payload.get("letter"), 0)
+
+        if self.item_type == "visual" and self.value_sum in (0, 1, 2):
+            return self.value_sum
+
+        return 0
