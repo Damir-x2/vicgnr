@@ -19,14 +19,14 @@ GAP = 0.35 * cm
 
 VIS_COL = {
     "black": colors.HexColor("#000000"),
-    "red": colors.HexColor("#d9534f"),
-    "yellow": colors.HexColor("#f0ad4e"),
-    "green": colors.HexColor("#5cb85c"),
-    "blue": colors.HexColor("#0275d8"),
+    "red": colors.HexColor("#d02f20"),
+    "yellow": colors.HexColor("#fcfe58"),
+    "green": colors.HexColor("#5bad5c"),
+    "blue": colors.HexColor("#63aeea"),
 }
 
 
-def _page_grid() -> tuple[int, int, int]:
+def _page_grid():
     use_w = W - 2 * MX
     use_h = H - 2 * MY
     cols = max(1, int((use_w + GAP) // (CW + GAP)))
@@ -34,7 +34,7 @@ def _page_grid() -> tuple[int, int, int]:
     return cols, rows, cols * rows
 
 
-def _draw_ltr(c: canvas.Canvas, x: float, y: float, ltr: str) -> None:
+def _draw_ltr(c, x, y, ltr: str):
     size = LTR_H_CM * cm
     c.setFillColor(colors.black)
     c.setFont("Helvetica-Bold", size)
@@ -42,19 +42,17 @@ def _draw_ltr(c: canvas.Canvas, x: float, y: float, ltr: str) -> None:
     c.drawCentredString(x + CW / 2, y0, ltr)
 
 
-def _draw_vis(c: canvas.Canvas, x: float, y: float, rings: list[str]) -> None:
+def _draw_vis(c, x, y, rings):
     cx = x + CW / 2
     cy = y + CH / 2
     r0 = (VIS_D_CM * cm) / 2
     step = r0 / 5
 
-    # Fill from outer ring to center.
     for i, color_name in enumerate(reversed(rings)):
         r = r0 - i * step
         c.setFillColor(VIS_COL[color_name])
         c.circle(cx, cy, r, stroke=0, fill=1)
 
-    # Draw boundaries to keep rings visible even when adjacent colors are the same.
     c.setLineWidth(0.9)
     c.setStrokeColor(colors.black)
     for i in range(0, 6):
@@ -64,10 +62,10 @@ def _draw_vis(c: canvas.Canvas, x: float, y: float, rings: list[str]) -> None:
         c.circle(cx, cy, r, stroke=1, fill=0)
 
 
-def _draw_card(c: canvas.Canvas, x: float, y: float, item) -> None:
+def _draw_card(c, x, y, item):
     data = item.data
 
-    c.setStrokeColor(colors.HexColor("#808080"))
+    c.setStrokeColor(colors.HexColor("#DADADA"))
     c.setLineWidth(1)
     c.rect(x, y, CW, CH, stroke=1, fill=0)
 
@@ -81,24 +79,24 @@ def _draw_card(c: canvas.Canvas, x: float, y: float, item) -> None:
         _draw_vis(c, x, y, data["rings"])
 
 
-def _draw_key(c: canvas.Canvas, kit, items: list) -> None:
+def _draw_key(c, kit, items):
     c.showPage()
     c.setFont("Helvetica-Bold", 16)
     c.drawString(2 * cm, H - 2 * cm, f"Answer Key - {kit.title}")
 
     c.setFont("Helvetica", 10)
     y = H - 3 * cm
-    for item in items:
-        data = item.data
-        if item.item_type == "letter":
+    for i in items:
+        data = i.data
+        if i.item_type == "letter":
             detail = data["letter"]
         else:
             initials = "-".join(color[:1].upper() for color in data["rings"])
-            detail = f"{initials} sum={item.value_sum}"
+            detail = f"{initials} sum={i.value_sum}"
 
         line = (
-            f"#{item.position:02d} | {item.item_type:<6} | "
-            f"{'REAL' if item.is_real else 'FALSE':<5} | {detail} | {item.status or '-'}"
+            f"#{i.position:02d} | {i.item_type:<6} | "
+            f"{'REAL' if i.is_real else 'FALSE':<5} | {detail} | {i.status or '-'}"
         )
         c.drawString(2 * cm, y, line)
         y -= 0.55 * cm
@@ -109,7 +107,7 @@ def _draw_key(c: canvas.Canvas, kit, items: list) -> None:
             y = H - 2 * cm
 
 
-def make_pdf(kit, items: list) -> bytes:
+def make_pdf(kit, items):
     buf = BytesIO()
     c = canvas.Canvas(buf, pagesize=A4)
     c.setTitle(f"{kit.title}.pdf")
@@ -132,5 +130,3 @@ def make_pdf(kit, items: list) -> bytes:
     c.save()
     buf.seek(0)
     return buf.getvalue()
-
-build_kit_pdf = make_pdf

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from io import BytesIO
+
+from flask import Blueprint, abort, flash, redirect, render_template, request, send_file, url_for
 from flask_login import current_user, login_required
 
 from .extensions import db
@@ -100,14 +103,21 @@ def new_kit():
 
 @bp.route("/kits/<int:kit_id>")
 @login_required
-def kit_detail(kit_id: int):
+def kit_detail(kit_id):
     kit = _k(kit_id)
     return render_template("kit_detail.html", kit=kit)
 
 
 @bp.route("/kits/<int:kit_id>/pdf")
 @login_required
-def download_kit_pdf(kit_id: int):
+def download_kit_pdf(kit_id):
     _ = _k(kit_id)
-    flash("PDF later. File for pdf was removed.", "error")
-    return redirect(url_for("main.kit_detail", kit_id=kit_id))
+    kit = _k(kit_id)
+    pdf = make_pdf(kit, kit.items)
+    name = f"kit_{kit.id}.pdf"
+    return send_file(
+        BytesIO(pdf),
+        mimetype="application/pdf",
+        as_attachment=True,
+        download_name=name,
+    )
