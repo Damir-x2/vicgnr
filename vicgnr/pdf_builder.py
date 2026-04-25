@@ -1,11 +1,19 @@
 from __future__ import annotations
 
+import os
 from io import BytesIO
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+FONT_PATH = os.path.join(os.path.dirname(__file__), "static", "ArialRegular.ttf")
+if os.path.exists(FONT_PATH):
+    pdfmetrics.registerFont(TTFont("Arial", FONT_PATH))
+    LETTER_FONT = "Arial"
 
 LTR_H_CM = 4.0
 VIS_D_CM = 5.0
@@ -34,10 +42,10 @@ def _page_grid():
     return cols, rows, cols * rows
 
 
-def _draw_ltr(c, x, y, ltr: str):
+def _draw_ltr(c, x, y, ltr):
     size = LTR_H_CM * cm
     c.setFillColor(colors.black)
-    c.setFont("Helvetica-Bold", size)
+    c.setFont(LETTER_FONT, size)
     y0 = y + (CH - size) / 2 + 8
     c.drawCentredString(x + CW / 2, y0, ltr)
 
