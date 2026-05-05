@@ -19,6 +19,7 @@
           <a href="{{ url_for('auth.login') }}">Login</a>
           <a href="{{ url_for('auth.register') }}">Register</a>
         {% endif %}
+        <button id="themeToggle" class="theme-toggle" type="button">Dark theme</button>
       </nav>
     </div>
   </header>
@@ -36,5 +37,37 @@
 
     {% block content %}{% endblock %}
   </main>
+
+  <script>
+    (function () {
+      var body = document.body;
+      var btn = document.getElementById("themeToggle");
+      var savedTheme = localStorage.getItem("theme");
+
+      if (savedTheme === "dark") {
+        body.classList.add("dark-theme");
+      }
+
+      function updateButtonText() {
+        if (body.classList.contains("dark-theme")) {
+          btn.textContent = "Light theme";
+        } else {
+          btn.textContent = "Dark theme";
+        }
+      }
+
+      updateButtonText();
+
+      btn.addEventListener("click", function () {
+        body.classList.toggle("dark-theme");
+        if (body.classList.contains("dark-theme")) {
+          localStorage.setItem("theme", "dark");
+        } else {
+          localStorage.setItem("theme", "light");
+        }
+        updateButtonText();
+      });
+    })();
+  </script>
 </body>
 </html>
