@@ -5,4 +5,10 @@ __pycache__/
 /RCJRescueMaze2026-final.pdf
 instance/
 *.pyc
+*.toc
+*.zip
+*.pkg
+*.pyz
+/build/VicGNR/warn-VicGNR.txt
+/build/VicGNR/xref-VicGNR.html
 /VicGNR_project.docx
