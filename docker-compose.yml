@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    image: vicgnr:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-sqlite:////app/instance/vicgnr.db}
+    ports:
+      - "${HOST_PORT:-8000}:${PORT:-8000}"
+    volumes:
+      - vicgnr-instance:/app/instance
+
+volumes:
+  vicgnr-instance:

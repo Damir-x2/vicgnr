@@ -1,6 +1,9 @@
 /.cspell/
 /.vscode/
 /.venv/
+.env
+.env.*
+!.env.example
 __pycache__/
 /RCJRescueMaze2026-final.pdf
 instance/
@@ -12,3 +15,5 @@ instance/
 /build/VicGNR/warn-VicGNR.txt
 /build/VicGNR/xref-VicGNR.html
 /VicGNR_project.docx
+DEPLOY.md
+.env.example
