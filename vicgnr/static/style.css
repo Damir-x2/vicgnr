@@ -49,6 +49,13 @@ a {
   margin-bottom: 1.25rem;
 }
 
+.site-footer {
+  margin-top: 2rem;
+  padding: 1rem 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .nav-row {
   display: flex;
   justify-content: space-between;
@@ -88,6 +95,15 @@ nav {
 
 .hero p {
   color: var(--muted);
+}
+
+.moscow-time {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.moscow-time strong {
+  color: var(--text);
 }
 
 .actions,

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from io import BytesIO
 
 from flask import Blueprint, abort, flash, redirect, render_template, request, send_file, url_for
@@ -10,6 +9,7 @@ from .extensions import db
 from .generator import gen_kit_items
 from .models import VictimItem, VictimKit
 from .pdf_builder import make_pdf
+from .time_api import get_current_time
 
 bp = Blueprint("main", __name__)
 
@@ -35,7 +35,8 @@ def _k(kid):
 def index():
     if current_user.is_authenticated:
         return redirect(url_for("main.dashboard"))
-    return render_template("index.html")
+
+    return render_template("index.html", moscow_time=get_current_time("Europe/Moscow"))
 
 
 @bp.route("/dashboard")
