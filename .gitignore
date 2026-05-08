@@ -16,4 +16,3 @@ instance/
 /build/VicGNR/xref-VicGNR.html
 /VicGNR_project.docx
 DEPLOY.md
-.env.example
