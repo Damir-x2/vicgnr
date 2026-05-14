@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from io import BytesIO
 
 from flask import Blueprint, abort, flash, redirect, render_template, request, send_file, url_for
@@ -29,6 +30,14 @@ def _k(kid):
     if z.user_id != current_user.id:
         abort(403)
     return z
+
+
+def _pdf_name(title, kit_id):
+    cleaned = re.sub(r'[<>:"/\\|?*]+', "_", (title or "").strip())
+    cleaned = re.sub(r"\s+", " ", cleaned).strip(" .")
+    if not cleaned:
+        cleaned = f"kit_{kit_id}"
+    return f"{cleaned}.pdf"
 
 
 @bp.route("/")
@@ -112,10 +121,9 @@ def kit_detail(kit_id):
 @bp.route("/kits/<int:kit_id>/pdf")
 @login_required
 def download_kit_pdf(kit_id):
-    _ = _k(kit_id)
     kit = _k(kit_id)
     pdf = make_pdf(kit, kit.items)
-    name = f"kit_{kit.id}.pdf"
+    name = _pdf_name(kit.title, kit.id)
     return send_file(
         BytesIO(pdf),
         mimetype="application/pdf",
