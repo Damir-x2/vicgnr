@@ -61,14 +61,6 @@ def _draw_vis(c, x, y, rings):
         c.setFillColor(VIS_COL[color_name])
         c.circle(cx, cy, r, stroke=0, fill=1)
 
-    c.setLineWidth(0.9)
-    c.setStrokeColor(colors.black)
-    for i in range(0, 6):
-        r = r0 - i * step
-        if r < 0:
-            continue
-        c.circle(cx, cy, r, stroke=1, fill=0)
-
 
 def _draw_card(c, x, y, item):
     data = item.data
